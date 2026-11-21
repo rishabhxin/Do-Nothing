@@ -22,7 +22,7 @@
   const whispers = [
     { at: 10, text: "Relax. It's literally your only job." },
     { at: 25, text: "Don't even think about touching that mouse." },
-    { at: 50, text: "Your mouse misses you. Ignore i" },
+    { at: 50, text: "Your mouse misses you. Ignore" },
     { at: 90, text: "Doing nothing is harder than it looks, huh?" },
     { at: 180, text: "Your brain: Should we do something? You: NO." },
     { at: 300, text: "Five minutes of zero achievements. Beautiful." },

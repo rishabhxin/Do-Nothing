@@ -20,15 +20,15 @@
   const ARM_DELAY_MS = 220;
 
   const whispers = [
-    { at: 10, text: "Still here." },
-    { at: 25, text: "Don't check anything." },
-    { at: 50, text: "Let it go." },
-    { at: 90, text: "Pure stillness." },
-    { at: 180, text: "Three minutes." },
-    { at: 300, text: "Five minutes." },
-    { at: 600, text: "Ten minutes." },
-    { at: 1800, text: "Half an hour." },
-    { at: 3600, text: "One hour." }
+    { at: 10, text: "Relax. It's literally your only job." },
+    { at: 25, text: "Don't even think about touching that mouse." },
+    { at: 50, text: "Your mouse misses you. Ignore i" },
+    { at: 90, text: "Doing nothing is harder than it looks, huh?" },
+    { at: 180, text: "Your brain: Should we do something? You: NO." },
+    { at: 300, text: "Five minutes of zero achievements. Beautiful." },
+    { at: 600, text: "LinkedIn can't turn this into a success story." },
+    { at: 1800, text: "You could've watched an entire episode. But here you are." },
+    { at: 3600, text: "You've done absolutely nothing. And done it exceptionally." }
   ];
 
   const headlineMap = {

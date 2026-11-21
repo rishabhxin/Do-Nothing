@@ -1,0 +1,444 @@
+:root {
+  color-scheme: dark;
+  --bg: #09090b;
+  --surface: rgba(255, 255, 255, 0.035);
+  --fg: #fafafa;
+  --fg-soft: #a1a1aa;
+  --fg-muted: #52525b;
+  --border: rgba(255, 255, 255, 0.09);
+  --accent: #34d399;
+  --danger: #f43f5e;
+  --font-sans: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body.is-playing {
+  cursor: none;
+}
+
+/* Subtle ambient glow */
+.ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255, 255, 255, 0.045) 0%,
+    rgba(255, 255, 255, 0.015) 28%,
+    transparent 62%
+  );
+  transition: opacity 0.8s ease, background 0.6s ease;
+}
+
+body.is-playing .ambient {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(52, 211, 153, 0.055) 0%,
+    rgba(255, 255, 255, 0.015) 30%,
+    transparent 62%
+  );
+  animation: breathe 6s ease-in-out infinite;
+}
+
+body.is-over .ambient {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(244, 63, 94, 0.085) 0%,
+    rgba(244, 63, 94, 0.02) 32%,
+    transparent 62%
+  );
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.65; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+/* Main App Shell */
+.app {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100svh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: max(20px, env(safe-area-inset-top))
+           max(24px, env(safe-area-inset-right))
+           max(20px, env(safe-area-inset-bottom))
+           max(24px, env(safe-area-inset-left));
+}
+
+/* Header */
+.topbar {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  transition: opacity 0.6s ease;
+}
+
+body.is-playing .topbar {
+  opacity: 0.25;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--fg);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fg-muted);
+  transition: background-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+body.is-playing .status-dot {
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.65);
+}
+
+body.is-over .status-dot {
+  background: var(--danger);
+  box-shadow: 0 0 12px rgba(244, 63, 94, 0.65);
+}
+
+.best-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+.best-label {
+  color: var(--fg-muted);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.best-value {
+  color: var(--fg-soft);
+}
+
+/* Shared Screen Layout */
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 0 40px;
+  animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hidden {
+  display: none !important;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Intro Screen */
+.hero-title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: clamp(54px, 13vw, 132px);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+}
+
+.muted-word {
+  color: var(--fg-muted);
+  font-weight: 300;
+}
+
+.subtitle {
+  margin: 24px 0 38px;
+  font-size: clamp(14px, 1.8vw, 17px);
+  font-weight: 300;
+  color: var(--fg-soft);
+  letter-spacing: 0.01em;
+}
+
+/* Primary Pill Button */
+.pill-btn {
+  appearance: none;
+  border: 1px solid transparent;
+  background: var(--fg);
+  color: #09090b;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  height: 52px;
+  padding: 0 26px 0 30px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+.pill-btn:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(255, 255, 255, 0.12);
+}
+
+.pill-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.pill-btn:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 4px;
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.pill-btn:hover .btn-icon {
+  transform: translateX(2px);
+}
+
+/* Active Game Screen */
+.timer-stage {
+  position: relative;
+  width: min(82vw, 420px);
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+}
+
+.ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.ring-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 1;
+}
+
+.ring-progress {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.45);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-dasharray: 829.38;
+  stroke-dashoffset: 829.38;
+}
+
+.timer-readout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 0 16px;
+}
+
+.timer {
+  font-family: var(--font-mono);
+  font-size: clamp(32px, 7.5vw, 56px);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.timer-ms {
+  color: var(--fg-muted);
+  font-size: 0.44em;
+  margin-left: 2px;
+  letter-spacing: -0.02em;
+}
+
+.whisper {
+  margin: 0;
+  min-height: 22px;
+  font-size: clamp(13px, 1.6vw, 15px);
+  font-weight: 300;
+  color: var(--fg-soft);
+  letter-spacing: 0.02em;
+  transition: opacity 0.4s ease;
+}
+
+.whisper.is-fading {
+  opacity: 0;
+}
+
+/* Game Over Screen */
+.over-badge {
+  margin-bottom: 18px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  background: rgba(52, 211, 153, 0.08);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+}
+
+.over-title {
+  margin: 0;
+  font-size: clamp(40px, 9.5vw, 88px);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  color: var(--fg);
+}
+
+.final-time {
+  margin: 22px 0 38px;
+  font-family: var(--font-mono);
+  font-size: clamp(26px, 5vw, 40px);
+  font-weight: 300;
+  color: var(--fg-soft);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Responsive Refinements */
+@media (max-width: 600px) {
+  .app {
+    padding: max(16px, env(safe-area-inset-top))
+             18px
+             max(16px, env(safe-area-inset-bottom))
+             18px;
+  }
+
+  .brand {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+  }
+
+  .best-pill {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+
+  .subtitle {
+    margin: 18px 0 32px;
+  }
+
+  .pill-btn {
+    height: 48px;
+    font-size: 14px;
+    padding: 0 22px 0 26px;
+  }
+
+  .timer-stage {
+    width: min(86vw, 330px);
+  }
+}
+
+/* Short landscape screens (phones in landscape / small windows) */
+@media (max-height: 520px) {
+  .screen {
+    padding: 8px 0 12px;
+  }
+
+  .hero-title {
+    font-size: clamp(42px, 11vh, 76px);
+  }
+
+  .subtitle {
+    margin: 12px 0 20px;
+  }
+
+  .timer-stage {
+    width: min(64vh, 290px);
+  }
+
+  .timer {
+    font-size: clamp(26px, 7vh, 42px);
+  }
+
+  .over-title {
+    font-size: clamp(32px, 10vh, 56px);
+  }
+
+  .final-time {
+    margin: 12px 0 20px;
+    font-size: clamp(20px, 5.5vh, 30px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient,
+  .screen {
+    animation: none !important;
+  }
+}

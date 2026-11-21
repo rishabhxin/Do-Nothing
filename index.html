@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#09090b" />
+  <meta name="description" content="Play Nothing — do absolutely nothing." />
+  <title>Do Nothing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <main class="app" id="app">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Play Nothing">
+        <span class="status-dot" id="status-dot" aria-hidden="true"></span>
+        <span>DO NOTHING</span>
+      </a>
+      <div class="best-pill" id="best-pill" aria-label="Personal best">
+        <span class="best-label">BEST</span>
+        <span class="best-value" id="best-time">00:00:00</span>
+      </div>
+    </header>
+
+    <!-- Intro Screen -->
+    <section class="screen intro-screen" id="intro-screen">
+      <h1 class="hero-title">
+        <span>DO</span>
+        <span class="muted-word">NOTHING</span>
+      </h1>
+      <p class="subtitle">Move, click, or type and it ends.</p>
+      <button class="pill-btn" id="start-button" type="button">
+        <span>Start</span>
+        <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3.5 8h9m0 0L9 4.5M12.5 8 9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </section>
+
+    <!-- Active Game Screen -->
+    <section class="screen game-screen hidden" id="game-screen" aria-live="off">
+      <div class="timer-stage">
+        <svg class="ring" viewBox="0 0 280 280" aria-hidden="true">
+          <circle class="ring-track" cx="140" cy="140" r="132" />
+          <circle class="ring-progress" id="ring-progress" cx="140" cy="140" r="132" />
+        </svg>
+        <div class="timer-readout">
+          <div class="timer" id="timer">00:00:00<span class="timer-ms">.00</span></div>
+          <p class="whisper" id="game-message">Be still.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Game Over Screen -->
+    <section class="screen over-screen hidden" id="over-screen">
+      <div class="over-badge hidden" id="new-best-badge">NEW BEST</div>
+      <h2 class="over-title" id="loss-headline">YOU MOVED.</h2>
+      <div class="final-time" id="final-time">00:00:00<span class="timer-ms">.00</span></div>
+      <button class="pill-btn" id="restart-button" type="button">
+        <span>Try again</span>
+        <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M12.5 8a4.5 4.5 0 1 1-1.32-3.18L12.5 6.1M12.5 3.5v2.6H9.9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </section>
+  </main>
+
+  <script src="./game.js"></script>
+</body>
+</html>

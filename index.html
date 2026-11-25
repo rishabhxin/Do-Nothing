@@ -4,71 +4,96 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#09090b" />
-  <meta name="description" content="Play Nothing — do absolutely nothing." />
-  <title>Do Nothing</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <meta name="description" content="Do Nothing — doing nothing has never been this difficult." />
+  <title>Do Nothing | The Ultimate Patience Test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
   <div class="ambient" aria-hidden="true"></div>
-
-  <main class="app" id="app">
+  <main class="app">
     <header class="topbar">
-      <a class="brand" href="./" aria-label="Play Nothing">
-        <span class="status-dot" id="status-dot" aria-hidden="true"></span>
-        <span>DO NOTHING</span>
-      </a>
-      <div class="best-pill" id="best-pill" aria-label="Personal best">
-        <span class="best-label">BEST</span>
-        <span class="best-value" id="best-time">00:00:00</span>
+      <a class="brand" href="./" aria-label="Do Nothing home"><span class="status-dot"></span><span>DO NOTHING</span></a>
+      <div class="top-actions">
+        <button class="icon-btn" id="sound-toggle" aria-label="Toggle sound" title="Toggle sound">♫</button>
+        <div class="best-pill"><span class="best-label">BEST</span><span class="best-value" id="best-time">00:00:00</span></div>
       </div>
     </header>
 
-    <!-- Intro Screen -->
     <section class="screen intro-screen" id="intro-screen">
-      <h1 class="hero-title">
-        <span>DO</span>
-        <span class="muted-word">NOTHING</span>
-      </h1>
-      <p class="subtitle">Move, click, or type and it ends.</p>
-      <button class="pill-btn" id="start-button" type="button">
-        <span>Start</span>
-        <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M3.5 8h9m0 0L9 4.5M12.5 8 9 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
+      <div class="eyebrow">THE ULTIMATE PATIENCE TEST</div>
+      <h1 class="hero-title"><span>DO</span><span class="muted-word">NOTHING</span></h1>
+      <p class="subtitle">Move, click, type, or get distracted. It ends.</p>
+      <div class="mode-picker">
+        <label for="mode-select">CHOOSE YOUR SUFFERING</label>
+        <select id="mode-select">
+          <option value="normal">Normal: the classic challenge</option>
+          <option value="hardcore">Hardcore: no tiny movements</option>
+          <option value="blind">Blind: timer disappears</option>
+          <option value="anxiety">Anxiety: extra distractions</option>
+          <option value="invisible">Invisible: timer fades after 30 seconds</option>
+          <option value="minute">One Minute: survive for 60 seconds</option>
+          <option value="impossible">Impossible: maximum temptation</option>
+        </select>
+      </div>
+      <button class="pill-btn" id="start-button"><span>Start doing nothing</span><span>→</span></button>
+      <div class="intro-links">
+        <button class="text-btn" data-open="achievements">Achievements</button>
+        <span>·</span><button class="text-btn" data-open="leaderboard">Local leaderboard</button>
+        <span>·</span><button class="text-btn" data-open="daily">Daily challenge</button>
+      </div>
+      <p class="tiny-note">No productivity. No purpose. Just you and your willpower.</p>
     </section>
 
-    <!-- Active Game Screen -->
     <section class="screen game-screen hidden" id="game-screen" aria-live="off">
-      <div class="timer-stage">
+      <div class="game-meta"><span id="mode-label">NORMAL MODE</span><span id="survival-label">STAY ALIVE</span></div>
+      <div class="timer-stage" id="timer-stage">
         <svg class="ring" viewBox="0 0 280 280" aria-hidden="true">
-          <circle class="ring-track" cx="140" cy="140" r="132" />
-          <circle class="ring-progress" id="ring-progress" cx="140" cy="140" r="132" />
+          <circle class="ring-track" cx="140" cy="140" r="132"/>
+          <circle class="ring-progress" id="ring-progress" cx="140" cy="140" r="132"/>
         </svg>
-        <div class="timer-readout">
+        <div class="timer-readout" id="timer-readout">
           <div class="timer" id="timer">00:00:00<span class="timer-ms">.00</span></div>
           <p class="whisper" id="game-message">Be still.</p>
         </div>
       </div>
+      <div class="game-footer"><span>DO NOT TOUCH ANYTHING</span><span id="event-counter">DISTRACTIONS: 0</span></div>
     </section>
 
-    <!-- Game Over Screen -->
     <section class="screen over-screen hidden" id="over-screen">
-      <div class="over-badge hidden" id="new-best-badge">NEW BEST</div>
+      <div class="over-badge hidden" id="new-best-badge">NEW PERSONAL BEST</div>
+      <div class="eyebrow" id="result-kicker">THE EXPERIMENT IS OVER</div>
       <h2 class="over-title" id="loss-headline">YOU MOVED.</h2>
       <div class="final-time" id="final-time">00:00:00<span class="timer-ms">.00</span></div>
-      <button class="pill-btn" id="restart-button" type="button">
-        <span>Try again</span>
-        <svg class="btn-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M12.5 8a4.5 4.5 0 1 1-1.32-3.18L12.5 6.1M12.5 3.5v2.6H9.9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
+      <p class="result-copy" id="result-copy">You did your best. Which wasn't very still.</p>
+      <div class="result-stats">
+        <div><strong id="result-mode">NORMAL</strong><span>MODE</span></div>
+        <div><strong id="result-rank">BEGINNER</strong><span>RANK</span></div>
+        <div><strong id="result-events">0</strong><span>EVENTS</span></div>
+      </div>
+      <div class="button-row">
+        <button class="pill-btn" id="restart-button">Try again ↻</button>
+        <button class="secondary-btn" id="share-button">Share result ↗</button>
+      </div>
+      <div class="intro-links"><button class="text-btn" data-open="achievements">Achievements</button><span>·</span><button class="text-btn" data-open="leaderboard">Leaderboard</button></div>
+    </section>
+
+    <section class="panel hidden" id="info-panel" aria-modal="true" role="dialog">
+      <div class="panel-head"><div><div class="eyebrow">YOUR PROGRESS</div><h2 id="panel-title">Achievements</h2></div><button class="icon-btn" id="close-panel" aria-label="Close">×</button></div>
+      <div id="panel-content"></div>
     </section>
   </main>
 
+  <div class="toast hidden" id="toast"></div>
+  <div class="notification-layer" id="notification-layer"></div>
+  <div class="fake-overlay hidden" id="fake-overlay">
+    <div class="fake-card"><div class="fake-dot"></div><div class="eyebrow">SYSTEM MESSAGE</div><h2>YOU LOST.</h2><p>Just kidding. Don't move.</p></div>
+  </div>
+  <div class="temptation hidden" id="temptation">
+    <div class="temptation-card"><span class="eyebrow">A VERY IMPORTANT OFFER</span><h2>FREE WIN</h2><p>One click. Instant victory. Totally legitimate.</p><button id="temptation-button">CLAIM YOUR WIN</button><small>There is absolutely no catch. Probably.</small></div>
+  </div>
   <script src="./game.js"></script>
 </body>
 </html>

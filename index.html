@@ -15,14 +15,26 @@
   <div class="ambient" aria-hidden="true"></div>
   <main class="app">
     <header class="topbar">
-      <a class="brand" href="./" aria-label="Do Nothing home"><span class="status-dot"></span><span>DO NOTHING</span></a>
+      <a class="brand" href="./" aria-label="Do Nothing home">
+        <span class="status-dot"></span>
+        <span>DO NOTHING</span>
+      </a>
       <div class="top-actions">
-        <button class="icon-btn" id="sound-toggle" aria-label="Toggle sound" title="Toggle sound">♫</button>
-        <div class="best-pill"><span class="best-label">BEST</span><span class="best-value" id="best-time">00:00:00</span></div>
+        <button class="icon-btn" id="ambient-toggle" aria-label="Toggle ambient rain" title="Ambient rain: Off">≈</button>
+        <button class="icon-btn" id="sound-toggle" aria-label="Toggle sound effects" title="Sound effects: On">♫</button>
+        <div class="streak-pill" id="streak-pill" title="Daily streak">
+          <span class="best-label">STREAK</span>
+          <span class="best-value" id="streak-count">0d</span>
+        </div>
+        <div class="best-pill">
+          <span class="best-label">BEST</span>
+          <span class="best-value" id="best-time">00:00:00</span>
+        </div>
       </div>
     </header>
 
     <section class="screen intro-screen" id="intro-screen">
+      <div class="challenge-banner hidden" id="challenge-banner"></div>
       <div class="eyebrow">THE ULTIMATE PATIENCE TEST</div>
       <h1 class="hero-title"><span>DO</span><span class="muted-word">NOTHING</span></h1>
       <p class="subtitle">Move, click, type, or get distracted. It ends.</p>
@@ -36,19 +48,28 @@
           <option value="invisible">Invisible: timer fades after 30 seconds</option>
           <option value="minute">One Minute: survive for 60 seconds</option>
           <option value="impossible">Impossible: maximum temptation</option>
+          <option value="tilt">Phone Tilt: put your phone down (gyroscope)</option>
+          <option value="zen">Zen: zero distractions, pure stillness</option>
         </select>
       </div>
       <button class="pill-btn" id="start-button"><span>Start doing nothing</span><span>→</span></button>
       <div class="intro-links">
         <button class="text-btn" data-open="achievements">Achievements</button>
-        <span>·</span><button class="text-btn" data-open="leaderboard">Local leaderboard</button>
-        <span>·</span><button class="text-btn" data-open="daily">Daily challenge</button>
+        <span>·</span>
+        <button class="text-btn" data-open="leaderboard">Leaderboard</button>
+        <span>·</span>
+        <button class="text-btn" data-open="stats">Stats</button>
+        <span>·</span>
+        <button class="text-btn" data-open="daily">Daily</button>
       </div>
       <p class="tiny-note">No productivity. No purpose. Just you and your willpower.</p>
     </section>
 
     <section class="screen game-screen hidden" id="game-screen" aria-live="off">
-      <div class="game-meta"><span id="mode-label">NORMAL MODE</span><span id="survival-label">STAY ALIVE</span></div>
+      <div class="game-meta">
+        <span id="mode-label">NORMAL MODE</span>
+        <span id="survival-label">STAY ALIVE</span>
+      </div>
       <div class="timer-stage" id="timer-stage">
         <svg class="ring" viewBox="0 0 280 280" aria-hidden="true">
           <circle class="ring-track" cx="140" cy="140" r="132"/>
@@ -59,11 +80,15 @@
           <p class="whisper" id="game-message">Be still.</p>
         </div>
       </div>
-      <div class="game-footer"><span>DO NOT TOUCH ANYTHING</span><span id="event-counter">DISTRACTIONS: 0</span></div>
+      <div class="game-footer">
+        <span id="footer-hint">DO NOT TOUCH ANYTHING</span>
+        <span id="event-counter">DISTRACTIONS: 0</span>
+      </div>
     </section>
 
     <section class="screen over-screen hidden" id="over-screen">
       <div class="over-badge hidden" id="new-best-badge">NEW PERSONAL BEST</div>
+      <div class="over-badge challenge-won hidden" id="challenge-result-badge">CHALLENGE BEATEN</div>
       <div class="eyebrow" id="result-kicker">THE EXPERIMENT IS OVER</div>
       <h2 class="over-title" id="loss-headline">YOU MOVED.</h2>
       <div class="final-time" id="final-time">00:00:00<span class="timer-ms">.00</span></div>
@@ -75,25 +100,82 @@
       </div>
       <div class="button-row">
         <button class="pill-btn" id="restart-button">Try again ↻</button>
-        <button class="secondary-btn" id="share-button">Share result ↗</button>
+        <button class="secondary-btn" id="download-card-button">Save card ↓</button>
+        <button class="secondary-btn" id="share-button">Challenge friend ↗</button>
       </div>
-      <div class="intro-links"><button class="text-btn" data-open="achievements">Achievements</button><span>·</span><button class="text-btn" data-open="leaderboard">Leaderboard</button></div>
+      <div class="intro-links">
+        <button class="text-btn" data-open="achievements">Achievements</button>
+        <span>·</span>
+        <button class="text-btn" data-open="leaderboard">Leaderboard</button>
+        <span>·</span>
+        <button class="text-btn" data-open="stats">Stats</button>
+        <span>·</span>
+        <button class="text-btn" id="change-mode-btn">Change mode</button>
+      </div>
     </section>
 
     <section class="panel hidden" id="info-panel" aria-modal="true" role="dialog">
-      <div class="panel-head"><div><div class="eyebrow">YOUR PROGRESS</div><h2 id="panel-title">Achievements</h2></div><button class="icon-btn" id="close-panel" aria-label="Close">×</button></div>
+      <div class="panel-head">
+        <div>
+          <div class="eyebrow" id="panel-eyebrow">YOUR PROGRESS</div>
+          <h2 id="panel-title">Achievements</h2>
+        </div>
+        <button class="icon-btn" id="close-panel" aria-label="Close">×</button>
+      </div>
       <div id="panel-content"></div>
     </section>
   </main>
 
   <div class="toast hidden" id="toast"></div>
   <div class="notification-layer" id="notification-layer"></div>
+
+  <!-- Fake Game Over Trap -->
   <div class="fake-overlay hidden" id="fake-overlay">
-    <div class="fake-card"><div class="fake-dot"></div><div class="eyebrow">SYSTEM MESSAGE</div><h2>YOU LOST.</h2><p>Just kidding. Don't move.</p></div>
+    <div class="fake-card">
+      <div class="fake-dot"></div>
+      <div class="eyebrow">SYSTEM MESSAGE</div>
+      <h2>YOU LOST.</h2>
+      <p>Just kidding. Don't move.</p>
+    </div>
   </div>
+
+  <!-- Temptation Trap -->
   <div class="temptation hidden" id="temptation">
-    <div class="temptation-card"><span class="eyebrow">A VERY IMPORTANT OFFER</span><h2>FREE WIN</h2><p>One click. Instant victory. Totally legitimate.</p><button id="temptation-button">CLAIM YOUR WIN</button><small>There is absolutely no catch. Probably.</small></div>
+    <div class="temptation-card">
+      <span class="eyebrow">A VERY IMPORTANT OFFER</span>
+      <h2>FREE WIN</h2>
+      <p>One click. Instant victory. Totally legitimate.</p>
+      <button id="temptation-button">CLAIM YOUR WIN</button>
+      <small>There is absolutely no catch. Probably.</small>
+    </div>
   </div>
+
+  <!-- Fake OS / Browser Alert Trap -->
+  <div class="fake-os hidden" id="fake-os">
+    <div class="fake-os-card">
+      <div class="fake-os-head">
+        <span class="fake-os-dot"></span>
+        <span id="fake-os-title">Browser Alert</span>
+      </div>
+      <h3 id="fake-os-heading">Page Unresponsive</h3>
+      <p id="fake-os-body">You can wait for it to become responsive or exit the page.</p>
+      <div class="fake-os-actions">
+        <button class="fake-os-btn" id="fake-os-btn-1">Wait</button>
+        <button class="fake-os-btn primary" id="fake-os-btn-2">Exit Page</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ghost Cursor Trap -->
+  <div class="ghost-cursor hidden" id="ghost-cursor" aria-hidden="true">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M5 3L19 12L12 13.5L9.5 20L5 3Z" fill="#fafafa" stroke="#09090b" stroke-width="1.6" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <!-- Crawling Fly / Dead Pixel Trap -->
+  <div class="screen-speck hidden" id="screen-speck" aria-hidden="true"></div>
+
   <script src="./game.js"></script>
 </body>
 </html>
